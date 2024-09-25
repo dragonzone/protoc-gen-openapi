@@ -121,7 +121,11 @@
                     <goBin>NONE</goBin>
                     <goPath>${gopath}</goPath>
                     <sources>${project.basedir}/src/main/go</sources>
-                    <scanDependencies>false</scanDependencies></configuration>
+                    <scanDependencies>false</scanDependencies>
+                    <buildFlags>
+                        <flag>-modcacherw</flag>
+                    </buildFlags>
+                </configuration>
                 <executions>
                     <execution>
                         <id>protoc-gen-openapi-windows-amd64</id>

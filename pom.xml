@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2024 Bryan Harclerode
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+  ~ documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+  ~ the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+  ~ to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+  ~ BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  ~ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+  ~ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>zone.dragon</groupId>
+        <artifactId>base-java-pom</artifactId>
+        <version>5.0.10</version>
+    </parent>
+
+    <groupId>zone.dragon.protobuf</groupId>
+    <artifactId>protoc-gen-openapi</artifactId>
+    <version>1.0.${revision}</version>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <kotlin.code.style>official</kotlin.code.style>
+        <maven.compiler.release>8</maven.compiler.release>
+        <gopath>${project.build.directory}/go</gopath>
+        <protobuf.version>4.28.2</protobuf.version>
+        <guava.version>33.2.1-android</guava.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.google.errorprone</groupId>
+                <artifactId>error_prone_annotations</artifactId>
+                <version>2.28.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java</artifactId>
+                <version>${protobuf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java-util</artifactId>
+                <version>${protobuf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.j2objc</groupId>
+                <artifactId>j2objc-annotations</artifactId>
+                <version>3.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-protobuf</artifactId>
+                <version>1.68.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-protobuf</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <extensions>
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.7.1</version>
+            </extension>
+        </extensions>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <configuration>
+                    <ignoredUnusedDeclaredDependencies>
+                        <dependency>io.grpc:grpc-protobuf</dependency>
+                    </ignoredUnusedDeclaredDependencies>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <configuration>
+                    <rules combine.children="append">
+                        <requireOS>
+                            <family>unix</family>
+                            <arch>amd64</arch>
+                        </requireOS>
+                    </rules>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.igormaznitsa</groupId>
+                <artifactId>mvn-golang-wrapper</artifactId>
+                <version>2.3.10</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <goBin>NONE</goBin>
+                    <goPath>${gopath}</goPath>
+                    <sources>${project.basedir}/src/main/go</sources>
+                    <scanDependencies>false</scanDependencies></configuration>
+                <executions>
+                    <execution>
+                        <id>protoc-gen-openapi-windows-amd64</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>install</goal>
+                        </goals>
+                        <configuration>
+                            <targetArch>amd64</targetArch>
+                            <targetOs>windows</targetOs>
+                            <packages>
+                                <package>github.com/google/gnostic/cmd/protoc-gen-openapi@v0.7.0</package>
+                            </packages>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>protoc-gen-openapi-windows-386</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>install</goal>
+                        </goals>
+                        <configuration>
+                            <targetArch>386</targetArch>
+                            <targetOs>windows</targetOs>
+                            <packages>
+                                <package>github.com/google/gnostic/cmd/protoc-gen-openapi@v0.7.0</package>
+                            </packages>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>protoc-gen-openapi-linux-amd64</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>install</goal>
+                        </goals>
+                        <configuration>
+                            <targetArch>amd64</targetArch>
+                            <targetOs>linux</targetOs>
+                            <packages>
+                                <package>github.com/google/gnostic/cmd/protoc-gen-openapi@v0.7.0</package>
+                            </packages>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>protoc-gen-openapi-darwin-amd64</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>install</goal>
+                        </goals>
+                        <configuration>
+                            <targetArch>amd64</targetArch>
+                            <targetOs>darwin</targetOs>
+                            <packages>
+                                <package>github.com/google/gnostic/cmd/protoc-gen-openapi@v0.7.0</package>
+                            </packages>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>protoc-gen-openapi-darwin-arm64</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>install</goal>
+                        </goals>
+                        <configuration>
+                            <targetArch>arm64</targetArch>
+                            <targetOs>darwin</targetOs>
+                            <packages>
+                                <package>github.com/google/gnostic/cmd/protoc-gen-openapi@v0.7.0</package>
+                            </packages>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.xolstice.maven.plugins</groupId>
+                <artifactId>protobuf-maven-plugin</artifactId>
+                <version>0.6.1</version>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <id>build-java-protos</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>test-compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <includes>
+                        <include>openapiv2/**.proto</include>
+                        <include>openapiv3/**.proto</include>
+                    </includes>
+                    <protoSourceRoot>${gopath}/pkg/mod/github.com/google/gnostic@v0.7.0/</protoSourceRoot>
+                    <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}</protocArtifact>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-exe</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>${gopath}/bin/windows_amd64/protoc-gen-openapi.exe</file>
+                                    <type>exe</type>
+                                    <classifier>windows-x86_64</classifier>
+                                </artifact>
+                                <artifact>
+                                    <file>${gopath}/bin/windows_386/protoc-gen-openapi.exe</file>
+                                    <type>exe</type>
+                                    <classifier>windows-x86_32</classifier>
+                                </artifact>
+                                <artifact>
+                                    <file>${gopath}/bin/darwin_amd64/protoc-gen-openapi</file>
+                                    <type>exe</type>
+                                    <classifier>osx-x86_64</classifier>
+                                </artifact>
+                                <artifact>
+                                    <file>${gopath}/bin/darwin_arm64/protoc-gen-openapi</file>
+                                    <type>exe</type>
+                                    <classifier>osx-aarch_64</classifier>
+                                </artifact>
+                                <artifact>
+                                    <file>${gopath}/bin/protoc-gen-openapi</file>
+                                    <type>exe</type>
+                                    <classifier>linux-x86_64</classifier>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

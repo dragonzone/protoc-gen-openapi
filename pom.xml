@@ -38,6 +38,7 @@
         <gopath>${project.build.directory}/go</gopath>
         <protobuf.version>4.28.2</protobuf.version>
         <guava.version>33.2.1-android</guava.version>
+        <protoc-gen-openapi-package>github.com/baharclerode/gnostic/cmd/protoc-gen-openapi@v0.7.1-baharclerode</protoc-gen-openapi-package>
     </properties>
 
     <dependencyManagement>
@@ -125,6 +126,9 @@
                     <buildFlags>
                         <flag>-modcacherw</flag>
                     </buildFlags>
+                    <packages>
+                        <package>${protoc-gen-openapi-package}</package>
+                    </packages>
                 </configuration>
                 <executions>
                     <execution>
@@ -136,9 +140,6 @@
                         <configuration>
                             <targetArch>amd64</targetArch>
                             <targetOs>windows</targetOs>
-                            <packages>
-                                <package>github.com/google/gnostic/cmd/protoc-gen-openapi@v0.7.0</package>
-                            </packages>
                         </configuration>
                     </execution>
                     <execution>
@@ -150,9 +151,6 @@
                         <configuration>
                             <targetArch>386</targetArch>
                             <targetOs>windows</targetOs>
-                            <packages>
-                                <package>github.com/google/gnostic/cmd/protoc-gen-openapi@v0.7.0</package>
-                            </packages>
                         </configuration>
                     </execution>
                     <execution>
@@ -164,9 +162,6 @@
                         <configuration>
                             <targetArch>amd64</targetArch>
                             <targetOs>linux</targetOs>
-                            <packages>
-                                <package>github.com/google/gnostic/cmd/protoc-gen-openapi@v0.7.0</package>
-                            </packages>
                         </configuration>
                     </execution>
                     <execution>
@@ -178,9 +173,6 @@
                         <configuration>
                             <targetArch>amd64</targetArch>
                             <targetOs>darwin</targetOs>
-                            <packages>
-                                <package>github.com/google/gnostic/cmd/protoc-gen-openapi@v0.7.0</package>
-                            </packages>
                         </configuration>
                     </execution>
                     <execution>
@@ -192,9 +184,6 @@
                         <configuration>
                             <targetArch>arm64</targetArch>
                             <targetOs>darwin</targetOs>
-                            <packages>
-                                <package>github.com/google/gnostic/cmd/protoc-gen-openapi@v0.7.0</package>
-                            </packages>
                         </configuration>
                     </execution>
                 </executions>

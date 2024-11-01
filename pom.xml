@@ -38,7 +38,8 @@
         <gopath>${project.build.directory}/go</gopath>
         <protobuf.version>4.28.2</protobuf.version>
         <guava.version>33.2.1-android</guava.version>
-        <protoc-gen-openapi-package>github.com/baharclerode/gnostic/cmd/protoc-gen-openapi@v0.7.2-baharclerode</protoc-gen-openapi-package>
+        <protoc-gen-openapi.version>v0.7.3-baharclerode</protoc-gen-openapi.version>
+        <protoc-gen-openapi-package>github.com/baharclerode/gnostic/cmd/protoc-gen-openapi@${protoc-gen-openapi.version}</protoc-gen-openapi-package>
     </properties>
 
     <dependencyManagement>
@@ -208,7 +209,7 @@
                         <include>openapiv2/**.proto</include>
                         <include>openapiv3/**.proto</include>
                     </includes>
-                    <protoSourceRoot>${gopath}/pkg/mod/github.com/baharclerode/gnostic@v0.7.2-baharclerode/</protoSourceRoot>
+                    <protoSourceRoot>${gopath}/pkg/mod/github.com/baharclerode/gnostic@${protoc-gen-openapi.version}/</protoSourceRoot>
                     <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}</protocArtifact>
                 </configuration>
             </plugin>

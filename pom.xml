@@ -31,6 +31,9 @@
     <artifactId>protoc-gen-openapi</artifactId>
     <version>1.0.${revision}</version>
 
+    <name>OpenAPI Generator for Protoc</name>
+    <description>Protoc plugin for generating OpenAPI specifications from protobuf files</description>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.code.style>official</kotlin.code.style>

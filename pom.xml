@@ -36,6 +36,10 @@
         <kotlin.code.style>official</kotlin.code.style>
         <maven.compiler.release>8</maven.compiler.release>
         <gopath>${project.build.directory}/go</gopath>
+        <!-- gnostic v0.7.9+ requires go >= 1.24.6 -->
+        <golang.version>1.27.3</golang.version>
+        <!-- Go SDK platform of the build host (see the golang-sdk-darwin profile) -->
+        <golang.sdk.os>linux</golang.sdk.os>
         <protobuf.version>4.28.2</protobuf.version>
         <guava.version>33.6.0-android</guava.version>
         <protoc-gen-openapi.version>v0.7.9-baharclerode</protoc-gen-openapi.version>
@@ -120,6 +124,12 @@
                 <version>2.3.10</version>
                 <extensions>true</extensions>
                 <configuration>
+                    <goVersion>${golang.version}</goVersion>
+                    <!-- The plugin's default SDK lookup lists the storage.googleapis.com/golang bucket, which no longer
+                         allows anonymous access, so download directly. dl.google.com doesn't send the x-goog-hash
+                         header the plugin uses to verify the archive, so that check has to be disabled. -->
+                    <sdkDownloadUrl>https://dl.google.com/go/go${golang.version}.${golang.sdk.os}-amd64.tar.gz</sdkDownloadUrl>
+                    <checkSdkHash>false</checkSdkHash>
                     <goBin>NONE</goBin>
                     <goPath>${gopath}</goPath>
                     <sources>${project.basedir}/src/main/go</sources>
@@ -257,5 +267,19 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>golang-sdk-darwin</id>
+            <activation>
+                <os>
+                    <family>mac</family>
+                </os>
+            </activation>
+            <properties>
+                <golang.sdk.os>darwin</golang.sdk.os>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>
